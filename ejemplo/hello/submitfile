@@ -1,0 +1,17 @@
+######################################
+## Example submit description file
+## for Open MPI 
+## condor_submit submitfile
+######################################
+universe = parallel
+executable = /usr/share/doc/condor/etc/examples/openmpiscript
+arguments = hello.mpi
+machine_count = 2
+# request_cpus = 8
+should_transfer_files = yes
+when_to_transfer_output = on_exit
+log                     = logs.log
+output                  = logs.out.$(NODE)
+error                   = logs.err.$(NODE)
+transfer_input_files = hello.mpi
+queue
