@@ -27,7 +27,13 @@ OPENMPI_INSTALL_PATH = /usr
 OPENMPI_EXCLUDE_NETWORK_INTERFACES = docker0,virbr0
 MOUNT_UNDER_SCRATCH = /
 ```
-Restart HTCondor (For Ubuntu `sudo service condor restart`) and test it with this submit file (note that you need to compile [hello.c](https://github.com/Lascilab/htcondor-pararell/blob/master/ejemplo/hello/mpi_hello.c):
+Restart HTCondor in each node (For Ubuntu `sudo service condor restart`) and check if the nodes are avalaible:
+```
+condor_status -const '!isUndefined(DedicatedScheduler)' -format "%s\t" Machine -format "%s\n" DedicatedScheduler
+```
+
+
+To test it with this submit file (note that you need to compile [hello.c](https://github.com/Lascilab/htcondor-pararell/blob/master/ejemplo/hello/mpi_hello.c):
 
 ```
 ######################################
@@ -56,3 +62,9 @@ There are a few examples that can help you check MPI config, check it out [here]
 
 ## Advance examples
 In some cases, you need to source an environment file or execute mpi in a NFS folder. For that case you would need to modify a little `openmpiscript`, check the [Openfoam example](https://github.com/Lascilab/htcondor-pararell/tree/master/ejemplo/openfoam)
+
+## Sources
+ - [University of York](https://wiki.york.ac.uk/display/RHPC/HTCondor)
+ - [HTCondor Manual: user](http://research.cs.wisc.edu/htcondor/manual/v8.6/2_9Parallel_Applications.html)
+ - [HTCondor Manual: admin](http://research.cs.wisc.edu/htcondor/manual/v8.6/3_14Setting_Up.html#SECTION004148000000000000000)
+ - [Stefano Gariazzo: notes](http://personalpages.to.infn.it/~gariazzo/htcondor/parallel.html)
