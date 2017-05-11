@@ -3,10 +3,11 @@ This guide will give you detail instructions on how to setup and use HTCondor fo
 
 > Use HTCondor >= 8.6.2
 
-## Simple Setup
+## Setup
 Install HTCondor in your machines along with MPI and SSH. Then configure your nodes to allow them to receive pararell jobs creating this file `/etc/condor/config.d/condor_config.local.dedicated.resource`
 
 ```
+DedicatedScheduler = "DedicatedScheduler@controller"
 ##-------------------------------------------------------------------
 ## 2) Always run jobs, but prefer dedicated ones
 ##--------------------------------------------------------------------
@@ -27,12 +28,24 @@ OPENMPI_INSTALL_PATH = /usr
 OPENMPI_EXCLUDE_NETWORK_INTERFACES = docker0,virbr0
 MOUNT_UNDER_SCRATCH = /
 ```
+
+Replace `DedicatedScheduler = "DedicatedScheduler@controller"` with your scheduler name, Be careful when specifying the name of the dedicated scheduler as it must match exactly. You can see the name of the scheduler by running `condor_status -schedd`. For example, if the output of the command is:
+
+```
+$ condor_status -schedd
+Name                 Machine              TotalRunningJobs           TotalIdleJobs     TotalHeldJobs
+
+hpctest0             hpctest0              0                              0                        0
+```
+
+Then, the line must be `DedicatedScheduler = "DedicatedScheduler@hpctest0"`.
+
 Restart HTCondor in each node (For Ubuntu `sudo service condor restart`) and check if the nodes are avalaible:
 ```
 condor_status -const '!isUndefined(DedicatedScheduler)' -format "%s\t" Machine -format "%s\n" DedicatedScheduler
 ```
 
-
+## Test
 To test it with this submit file (note that you need to compile [hello.c](https://github.com/Lascilab/htcondor-pararell/blob/master/ejemplo/hello/mpi_hello.c):
 
 ```
