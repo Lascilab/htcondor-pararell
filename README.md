@@ -46,7 +46,7 @@ condor_status -const '!isUndefined(DedicatedScheduler)' \
    -format "%s\t" Machine -format "%s\n" DedicatedScheduler
 ```
 
-## Test
+## Hello world Test
 Lets test a "hello world" program creating a file called: hello.c
 ```
 #include <stdio.h>
@@ -91,11 +91,19 @@ queue
 
 Submit to HTCondor `condor_submit submitfile` and wait `condor_q`
 
-## Simple examples
-There are a few examples that can help you check MPI config, check it out [here](https://github.com/Lascilab/htcondor-pararell/tree/master/ejemplo)
+## Numerical integration example
+Download the [source code](https://raw.githubusercontent.com/Lascilab/htcondor-pararell/master/ejemplo/integracion/integracion.c) of a numerical integration usin mpi that demonstrates the use of MPI_Init,MPI_Comm_rank,MPI_Comm_size,MPI_Reduce and MPI_Finalize in your cluster. Compile and run it.
+
+```
+$ wget https://raw.githubusercontent.com/Lascilab/htcondor-pararell/master/ejemplo/integracion/integracion.c
+$ wget https://raw.githubusercontent.com/Lascilab/htcondor-pararell/master/ejemplo/integracion/submitfile
+$ condor_submit submitfile
+```
 
 ## Advance examples
-In some cases, you need to source an environment file or execute mpi in a NFS folder. For that case you would need to modify a little `openmpiscript`, check the [Openfoam example](https://github.com/Lascilab/htcondor-pararell/tree/master/ejemplo/openfoam). Notice that the line 172 added `-wdir` option that tells mpi to execute in that directory.
+In some cases, you will need to source an environment file or execute mpi in a NFS folder. For that case you would need to modify a little `openmpiscript` (copy to your folder, make the adjustments and modify the submitfile), check the [Openfoam example](https://github.com/Lascilab/htcondor-pararell/tree/master/ejemplo/openfoam). 
+
+Notice that the line 172 added `-wdir` option that tells mpi to execute in that directory.
 
 ```
  mpirun -v -wdir /vagrant/ejemplo/openfoam/damBreak \
@@ -103,12 +111,12 @@ In some cases, you need to source an environment file or execute mpi in a NFS fo
       -n $_CONDOR_NPROCS -hostfile machines $EXECUTABLE $@ &
 ```
 
-Also we modify `condor_ssh` in the last line (150) in order to `source /etc/profile` and set many environment variables.
+Also notice thath `condor_ssh` file, in the last line (150) does `source /etc/profile` and set many environment variables for the execution.
 
 
 
 ## Vagrant
-You can also use vagrant for a quick test, install [vagrant](https://www.vagrantup.com/) and execute `vagrant up`. In a few minutes you will have three virtual machines up and running: a controller and two nodes. Execute `vagrant ssh controller` to get into the controller and submit every example located in "/vagrant"
+You can also use vagrant for a quick test, install [vagrant](https://www.vagrantup.com/) and execute `vagrant up`. In a few minutes you will have three virtual machines up and running: a controller and two nodes. Execute `vagrant ssh controller` to get into the controller and submit every example located in "/vagrant". The controller only is use to submit jobs, so if you want to compile, enter into the nodes (`vagrant ssh server1` or `vagrant ssh server2`).
 
 ## Sources
  - [University of York](https://wiki.york.ac.uk/display/RHPC/HTCondor)
