@@ -22,7 +22,7 @@ cluster = {
 Vagrant.configure("2") do |global_config|
   cluster.each_pair do |name, options|
     global_config.vm.define name do |config|
-      config.vm.box = "ubuntutrusty64"
+      config.vm.box = "ubuntu/trusty64"
       config.vm.hostname = "#{name}"
       config.vm.network :private_network, ip: options[:ipaddress]
       if Vagrant.has_plugin?("vagrant-hostmanager")
