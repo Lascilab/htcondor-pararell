@@ -118,6 +118,11 @@ Also notice thath `condor_ssh` file, in the last line (150) does `source /etc/pr
 ## Vagrant
 You can also use vagrant for a quick test, install [vagrant](https://www.vagrantup.com/) and execute `vagrant up`. In a few minutes you will have three virtual machines up and running: a controller and two nodes. Execute `vagrant ssh controller` to get into the controller and submit every example located in "/vagrant". The controller only is use to submit jobs, so if you want to compile, enter into the nodes (`vagrant ssh server1` or `vagrant ssh server2`).
 
+## Troubleshooting
+
+Your cluster nodes might have this entries in HTCondor config `TRUST_UID_DOMAIN = FALSE` and `STARTER_ALLOW_RUNAS_OWNER = FALSE`, that means that every Job must be run as the user 'nobody'. But there is a problem because that user doen't have an home dir where openmpiscript can chdir. Please, change it to true or share your solution :D.
+
+
 ## Sources
  - [University of York](https://wiki.york.ac.uk/display/RHPC/HTCondor)
  - [HTCondor Manual: user](http://research.cs.wisc.edu/htcondor/manual/v8.6/2_9Parallel_Applications.html)
