@@ -101,7 +101,7 @@ $ condor_submit submitfile
 ```
 
 ## Advance examples
-In some cases, you will need to source an environment file or execute mpi in a NFS folder. For that case you would need to modify a little `openmpiscript` (copy to your folder, make the adjustments and modify the submitfile), check the [Openfoam example](https://github.com/Lascilab/htcondor-pararell/tree/master/ejemplo/openfoam). 
+Lets say that you need to source an environment file or execute mpi in a NFS folder, for that case you would need to modify a little `openmpiscript` (copy to your folder, make the adjustments and modify the submitfile), check the [Openfoam example](https://github.com/Lascilab/htcondor-pararell/tree/master/ejemplo/openfoam). 
 
 Notice that the line 172 added `-wdir` option that tells mpi to execute in that directory.
 
@@ -113,14 +113,14 @@ Notice that the line 172 added `-wdir` option that tells mpi to execute in that 
 
 Also notice thath `condor_ssh` file, in the last line (150) does `source /etc/profile` and set many environment variables for the execution.
 
-
+> I have tried unsuccessfully to set USE_NFS = true in the condor configuration file and initialDir = /nfs/folder in the submit file to accomplish the above objectice, unfortunelly none of that options has worked for me. Also, if you want to execute a few environment variables without modifying the openmpiscript, you can set environment = "PATH=/usr/bin:/bin:/usr/sbin:/sbin" in the submitfile.
 
 ## Vagrant
-You can also use vagrant for a quick test, install [vagrant](https://www.vagrantup.com/) and execute `vagrant up`. In a few minutes you will have three virtual machines up and running: a controller and two nodes. Execute `vagrant ssh controller` to get into the controller and submit every example located in "/vagrant". The controller only is use to submit jobs, so if you want to compile, enter into the nodes (`vagrant ssh server1` or `vagrant ssh server2`).
+Use vagrant for a quick test, install [vagrant](https://www.vagrantup.com/) and execute `vagrant up`. In a few minutes you will have three virtual machines up and running: a controller and two nodes. Execute `vagrant ssh controller` to get into the controller and submit every example located in "/vagrant". Remember that the controller machine is only used to submit jobs, so if you want to compile each example enter into the other nodes (`vagrant ssh server1` or `vagrant ssh server2`).
 
 ## Troubleshooting
 
-Your cluster nodes might have this entries in HTCondor config `TRUST_UID_DOMAIN = FALSE` and `STARTER_ALLOW_RUNAS_OWNER = FALSE`, that means that every Job must be run as the user 'nobody'. But there is a problem because that user doen't have an home dir where openmpiscript can chdir. Please, change it to true or share your solution :D.
+Your cluster nodes might have this entries in HTCondor config `TRUST_UID_DOMAIN = FALSE` and `STARTER_ALLOW_RUNAS_OWNER = FALSE`, that means that every Job must be run as the user 'nobody'. But there is a problem because that user doen't have an home dir where openmpiscript can chdir. Please, change it to true (or share with us your solution :D).
 
 
 ## Sources
